@@ -4,15 +4,15 @@
          http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>org.my</groupId>
+    <groupId>com.github.geoHeil</groupId>
     <artifactId>forecast</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <!-- general information about your package -->
-    <name>Package name or title</name>
-    <description>A short description of your package.</description>
-    <url>http://www.url.to/your/package/website</url>
+    <name>forecast</name>
+    <description>Forecasting Functions for Time Series and Linear Models</description>
+    <url>http://github.com/robjhyndman/forecast</url>
     <licenses>
         <!-- add one or more licenses under which the package is released -->
         <license>
@@ -23,6 +23,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <renjin.version>0.7.1537</renjin.version>
     </properties>
 
     <dependencies>
@@ -30,13 +31,13 @@
         <dependency>
             <groupId>org.renjin</groupId>
             <artifactId>renjin-script-engine</artifactId>
-            <version>0.7.0-RC7</version>
+            <version>${renjin.version}</version>
         </dependency>
         <!-- the hamcrest package is only required if you use it for unit tests -->
         <dependency>
             <groupId>org.renjin</groupId>
             <artifactId>hamcrest</artifactId>
-            <version>0.7.0-RC7</version>
+            <version>${renjin.version}</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
@@ -62,21 +63,45 @@
             <plugin>
                 <groupId>org.renjin</groupId>
                 <artifactId>renjin-maven-plugin</artifactId>
-                <version>0.7.0-RC7</version>
+                <version>${renjin.version}</version>
                 <executions>
                     <execution>
-                        <id>build</id>
+                        <id>renjin-compile</id>
                         <goals>
                             <goal>namespace-compile</goal>
                         </goals>
-                        <phase>compile</phase>
+                        <configuration>
+                            <sourceDirectory>${basedir}/R</sourceDirectory>
+                            <dataDirectory>${basedir}/data</dataDirectory>
+                        </configuration>
                     </execution>
                     <execution>
-                        <id>test</id>
+                        <id>gnur-compile</id>
+                        <goals>
+                            <goal>gnur-sources-compile</goal>
+                        </goals>
+                        <configuration>
+                            <sourceDirectories>
+                                <sourceDirectory>${basedir}/src</sourceDirectory>
+                            </sourceDirectories>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>renjin-test</id>
                         <goals>
                             <goal>test</goal>
                         </goals>
-                        <phase>test</phase>
+                        <configuration>
+                            <testSourceDirectory>${basedir}/tests</testSourceDirectory>
+                            <defaultPackages>
+                                <package>methods</package>
+                                <package>stats</package>
+                                <package>utils</package>
+                                <package>grDevices</package>
+                                <package>graphics</package>
+                                <package>datasets</package>
+                            </defaultPackages>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
