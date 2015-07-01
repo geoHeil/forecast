@@ -6,6 +6,13 @@ forecastRenjin is an adaption of the R-CRAN forecast package to work with Renjin
 
 > see http://stackoverflow.com/questions/31149223/how-much-effort-is-needed-to-adapt-existing-r-packages-to-renjin
 
+To run:
+```s
+mvn install -U
+mvn clean
+mvn test
+```
+
 #forecast
 
 The R package *forecast* provides methods and tools for displaying and analysing univariate time series forecasts including exponential smoothing via state space models and automatic ARIMA modelling.
